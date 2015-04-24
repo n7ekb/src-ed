@@ -78,4 +78,5 @@ for line in file:
 	linenum += 1
 file.close()
 
+# All done, finish with normal exit code.
 sys.exit(0)
