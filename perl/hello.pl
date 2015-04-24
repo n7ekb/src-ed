@@ -14,10 +14,15 @@ my $verinfo = `git describe --abbrev=7 --dirty --always --tags`;
 print "Hello Perl World!  Version:  $verinfo\n";
 
 # Show list of command line arguments
-print "Command line args: @ARGV\n";
-print "ARGV[0] = $ARGV[0]";
-print "ARGV[1] = $ARGV[1]";
-print "ARGV[2] = $ARGV[2]";
+print "Command line args: ";
+foreach (@ARGV) {
+	print "  $_";
+}
+print "\n";
+
+# Determine number of physical CPU sockets
+my $socketcount=`cat /proc/cpuinfo | grep 'physical id' | sort | uniq | wc -l`;
+print "CPU socket count: $socketcount\n";
 
 # print out our animals array in reverse-sorted order
 print "\nValue of animals array:\n";
