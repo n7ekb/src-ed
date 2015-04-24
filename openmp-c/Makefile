@@ -4,14 +4,18 @@
 COMPILER_VER:=$(shell gcc --version)
 COMPILER_OPTS=-fopenmp
 GIT_DESCRIBE:=$(shell git describe --abbrev=7 --dirty --always --tags --long)
+GIT_AUTHOR:=$(shell git --no-pager log -1 --pretty=format:"%an <%ae>")
+BUILD_DATE:=$(shell date +"%F %H:%M:%S")
 
 .PHONY: all
 all:    hello-omp
   
 versioninfo.txt:
-	@echo "@(#) Compiler version: ${COMPILER_VER}." >versioninfo.txt
+	@echo "@(#) Build date: ${BUILD_DATE}." >versioninfo.txt
+	@echo "@(#) Compiler version: ${COMPILER_VER}." >>versioninfo.txt
 	@echo "@(#) Compiler options: ${COMPILER_OPTS}." >>versioninfo.txt
 	@echo "@(#) Git info: ${GIT_DESCRIBE}" >>versioninfo.txt
+	@echo "@(#) Commit author: ${GIT_AUTHOR}" >>versioninfo.txt
         
 versioninfo.o:  versioninfo.txt
 	objcopy --input binary \
