@@ -1,8 +1,10 @@
 # Sample makefile to add version/compiler info via an extra
 # object module linked to final binary.
 #
-COMPILER_VER:=$(shell gcc --version)
-COMPILER_OPTS=-fopenmp
+CC=gcc
+COMPILER_VER:=$(shell $(CC) --version)
+CFLAGS=-fopenmp
+LDFLAGS=
 GIT_DESCRIBE:=$(shell git describe --abbrev=7 --dirty --always --tags --long)
 GIT_AUTHOR:=$(shell git --no-pager log -1 --pretty=format:"%an <%ae>")
 BUILD_DATE:=$(shell date +"%F %H:%M:%S")
@@ -13,7 +15,8 @@ all:    hello-omp
 versioninfo.txt:
 	@echo "@(#) Build date: ${BUILD_DATE}." >versioninfo.txt
 	@echo "@(#) Compiler version: ${COMPILER_VER}." >>versioninfo.txt
-	@echo "@(#) Compiler options: ${COMPILER_OPTS}." >>versioninfo.txt
+	@echo "@(#) Compiler options: '${CFLAGS}'." >>versioninfo.txt
+	@echo "@(#) Linker options: '${LDFLAGS}'." >>versioninfo.txt
 	@echo "@(#) Git info: ${GIT_DESCRIBE}" >>versioninfo.txt
 	@echo "@(#) Commit author: ${GIT_AUTHOR}" >>versioninfo.txt
         
@@ -26,8 +29,8 @@ versioninfo.o:  versioninfo.txt
 		versioninfo.txt versioninfo.o
 
 hello-omp:  hello-omp.c Makefile versioninfo.o
-	gcc $(COMPILER_OPTS) -DVERSIONINFO="\"$(GIT_DESCRIBE)\"" hello-omp.c \
-		versioninfo.o -o hello-omp
+	gcc $(CFLAGS) $(LDFLAGS) -DVERSIONINFO="\"$(GIT_DESCRIBE)\"" \
+		hello-omp.c versioninfo.o -o hello-omp
 
 .PHONY: test
 test:
