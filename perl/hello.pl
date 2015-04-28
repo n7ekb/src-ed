@@ -41,6 +41,27 @@ foreach (keys %fruit_color) {
 	print "$_ = $fruit_color{$_}\n";
 }
 
+# Read a non-existent environment variable and supply default value...
+my $some_env_var;
+if (defined $ENV{'PROBABLY_NOT_THERE'}) {
+	$some_env_var = $ENV{'PROBABLY_NOT_THERE'};
+} else {
+	$some_env_var = "Default value";
+}
+print "\nPROBABLY_NOT_THERE is set to \'$some_env_var\'\n\n";
+
+# Let's read in the PATH variable from the OS and print it out...
+my $path_env_var = $ENV{'PATH'};
+print "OS PATH var is set to: \'$path_env_var\'\n\n";
+
+# Let's manipulate PATH variable and then restore it
+print "Adding :/test to PATH variable\n";
+$ENV{'PATH'} = "$ENV{'PATH'}:/test";
+print "OS PATH var is set to: \'$ENV{'PATH'}\'\n\n";
+print "Restoring original PATH value.\n";
+$ENV{'PATH'} = $path_env_var;
+print "OS PATH var is set to: \'$path_env_var\'\n\n";
+
 # Let's create the file test.out and write animals array to it...
 print "\nWriting test.out file...\n";
 open(my $out, ">", "test.out") or die "Can't create/open test.out! $!\n";
