@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+#  what - get SCCS identification information
+#
+#  SCCS was the source code control system distributed
+#  with AT&T Unix System III and V.
+#
+for i in "$@";
+do
+	echo "$i:"
+	strings "$i" | grep -e '@(#)' | sed 's/^.*[@][(][#][)]\(.*\)/    \1/'
+done
